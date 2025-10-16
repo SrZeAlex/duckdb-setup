@@ -82,15 +82,17 @@ conn.execute("COPY large_analysis TO 'analysis_results.parquet' (FORMAT PARQUET)
 # Create views for repeated analysis
 conn.execute("""
     CREATE OR REPLACE VIEW daily_returns AS
-    SELECT 
-        Symbol,
-        Date,
-        Close,
-        LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date) as prev_close,
-        (Close - LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date)) / 
-        LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date) * 100 as daily_return
-    FROM stocks
-    WHERE LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date) IS NOT NULL
+    SELECT * FROM (
+        SELECT 
+            Symbol,
+            Date,
+            Close,
+            LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date) as prev_close,
+            (Close - LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date)) / 
+            LAG(Close) OVER (PARTITION BY Symbol ORDER BY Date) * 100 as daily_return
+        FROM stocks
+    )
+    WHERE prev_close IS NOT NULL
 """)
 
 # Use the view
