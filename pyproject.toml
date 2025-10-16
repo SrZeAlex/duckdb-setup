@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "finance-analysis"
+version = "0.1.0"
+description = "A project for financial data analysis using DuckDB, Pandas, yFinance, and visualization tools."
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+duckdb = "*"
+pandas = "*"
+yfinance = "*"
+matplotlib = "*"
+seaborn = "*"
+jupyterlab = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
